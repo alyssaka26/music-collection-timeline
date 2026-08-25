@@ -140,7 +140,7 @@
         })
         .catch(() => { timelineCanvas.innerHTML = '<p style="padding:220px 0 0 85px;color:#99958e;font-family:var(--hand);font-size:15px">封面暂时无法整理，请稍后刷新。</p>'; });
       const app = document.querySelector('.app'), toggle = document.getElementById('mode-toggle'), title = document.getElementById('page-title'), eyebrow = document.getElementById('eyebrow'), hint = document.getElementById('hint');
-      toggle.addEventListener('click', () => { const isTimeline=!app.classList.contains('timeline'); app.classList.toggle('timeline',isTimeline); toggle.setAttribute('aria-pressed',String(isTimeline)); toggle.innerHTML=isTimeline?'<span class="mode-icon">⊞</span><span>分类视图</span>':'<span class="mode-icon">↔</span><span>时间轴</span>'; eyebrow.textContent=isTimeline?'SAVED BY MONTH':'MY 2,000 SONGS'; title.textContent=isTimeline?'每个月，收藏了一段时间':'每一首，都有它的去处'; hint.textContent=isTimeline?'2018—2026 · 底部时间尺切换年份':'按听歌时刻自动归类 · 点开任一叠'; });
+      toggle.addEventListener('click', () => { const isTimeline=!app.classList.contains('timeline'); app.classList.toggle('timeline',isTimeline); toggle.setAttribute('aria-pressed',String(isTimeline)); toggle.innerHTML=isTimeline?'<span class="mode-icon">⊞</span><span>分类视图</span>':'<span class="mode-icon">↔</span><span>时间轴</span>'; eyebrow.textContent=isTimeline?'SAVED BY MONTH':'MY 2,000 SONGS'; title.textContent=isTimeline?'我的收藏历年图谱':'每一首，都有它的去处'; hint.textContent=isTimeline?'2018—2026 · 底部时间尺切换年份':'按听歌时刻自动归类 · 点开任一叠'; });
     </script>
   </body>
 </html>
