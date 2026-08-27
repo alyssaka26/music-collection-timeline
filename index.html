@@ -41,6 +41,7 @@
     </style>
     <style>
       .song-empty{padding:42px 0 42px 112px;border-bottom:1px solid var(--line);color:#8f8a82;font-size:12px}
+      .focus-sheet.is-listing{background:#fffefd}.focus-dialog{position:fixed;inset:0;max-height:none;background:#fffefd}.focus-dialog::backdrop{background:#fffefd;backdrop-filter:none}.focus-dialog.fallback-open{background:#fffefd;backdrop-filter:none}.focus-back{display:grid;place-items:center;width:32px;height:32px;padding:0}.focus-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.save-recommendation{width:40px;height:40px}.save-recommendation svg{width:28px;height:28px}.timeline-canvas .month-copy{top:340px}.timeline-canvas .month-copy.is-active{z-index:8}.timeline-canvas .month-copy.is-active strong{font-size:24px}.timeline-canvas .month-copy:not(.is-active),.timeline-canvas .month-guide:not(.is-active){opacity:.42}.month-story{display:none;width:300px;max-width:300px;margin:8px 0 0;color:#7b766e;font-size:11px;line-height:1.55}.timeline-canvas .month-copy.is-active .month-story{display:block}.timeline-canvas .month-cover.is-active{z-index:8;transform:scale(1.18)!important;box-shadow:0 9px 17px rgba(31,29,25,.2)}.timeline .year-scrubber{bottom:max(28px,calc(env(safe-area-inset-bottom) + 22px))}
     </style>
   </head>
   <body>
@@ -51,7 +52,7 @@
       <nav class="category-tabs" id="category-tabs" aria-label="选择收藏分类维度"><button class="category-tab" type="button" aria-selected="true" data-group="suggested">建议</button><button class="category-tab" type="button" aria-selected="false" data-group="artist">歌手</button><button class="category-tab" type="button" aria-selected="false" data-group="time">时间</button><button class="category-tab" type="button" aria-selected="false" data-group="genre">流派</button></nav>
       <section class="timeline-view" id="timeline-view" aria-label="按月查看收藏歌曲"><p class="timeline-note">按月聚拢 · 封面越大，代表本月听得越多</p><div class="timeline-scroll"><div class="timeline-canvas" id="timeline-canvas"></div></div><nav class="year-scrubber" id="year-scrubber" aria-label="按年份浏览收藏"></nav><p class="selected-month" id="selected-month" aria-live="polite"></p></section><p class="playback-status" id="playback-status" aria-live="polite" hidden></p>
     </main>
-    <dialog class="focus-dialog" id="focus-dialog" aria-labelledby="focus-list-title"><section class="focus-sheet is-listing" id="focus-sheet"><section class="focus-list" id="focus-list" aria-label="分类歌曲列表"><header class="focus-list-head"><button class="focus-back" id="focus-back" type="button">← 收藏夹</button><div><h2 class="focus-list-title" id="focus-list-title"></h2><p class="focus-list-count" id="focus-list-count"></p></div></header><ol class="song-list" id="song-list"></ol></section><div class="deal-intro" id="deal-intro" aria-hidden="true"></div></section></dialog>
+    <dialog class="focus-dialog" id="focus-dialog" aria-labelledby="focus-list-title"><section class="focus-sheet is-listing" id="focus-sheet"><section class="focus-list" id="focus-list" aria-label="分类歌曲列表"><header class="focus-list-head"><button class="focus-back" id="focus-back" type="button" aria-label="返回收藏夹"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7M8 12h11" /></svg></button><div><h2 class="focus-list-title" id="focus-list-title"></h2><p class="focus-list-count" id="focus-list-count"></p></div></header><ol class="song-list" id="song-list"></ol></section><div class="deal-intro" id="deal-intro" aria-hidden="true"></div></section></dialog>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script>
       function highResolutionArtwork(url){return url.replace(/\/\d+x\d+bb\.jpg$/, '/1200x1200bb.jpg');}
@@ -77,8 +78,8 @@
       ].map(track=>({...track,artwork:highResolutionArtwork(track.artwork)}));
       const artworks=fallbackTracks.map(track=>track.artwork);
       const categorySets = { suggested: [
-        ['R&B','你的收藏，刚打开一个新方向',3,true],['通勤路上','把城市的噪声调成背景',218],['深夜循环','那些还不想结束的晚上',205],['收藏于 2022','一段很长的夏天',190],['独自散步','耳机里的私人电影',178],
-        ['雨天限定','适合靠窗发呆的歌',169],['想念某个人','没关系，听完就好了',158],['需要一点勇气','出门前按下播放',153],['旅行路过','每一站都有一首主题曲',147],
+        ['红心足迹·上海','心动也盖着城市邮戳',3,true],['去年今日收藏','心动时间打了个结',218],['深夜红心','独自心动的情绪浓度时刻',205],['还记得吗','时隔一年再重温下吧',190],['最多分享欲','真正的喜欢 藏不住',178],
+        ['80年代发行','代表着你的老灵魂',169],['想念某个人','没关系，听完就好了',158],['需要一点勇气','出门前按下播放',153],['旅行路过','每一站都有一首主题曲',147],
         ['周末午后','阳光落在地板上的声音',142],['运动时刻','把呼吸交给节拍',131],['朋友分享','聊天框里收到的心意',123],['还没分类','等下一次心动来命名',186]
       ], artist: [
         ['KAROL G','你的收藏，刚打开一个新方向',1,true],['周杰伦','跨越很多年份的偏爱',386],['Taylor Swift','写给情绪的长句',245],['Drake','适合夜行的低频',210],['Olivia Rodrigo','青春期没有结束',187],['Ariana Grande','轻盈但不轻飘',174],['BTS','在舞台与日常之间',158],['陈奕迅','被反复听懂的叙事',143],['milet','安静而有力量',132],['Steve Lacy','午后的一点松弛',121],['Phoebe Bridgers','克制的感伤',104],['藤井风','留白里的节奏',81],['其他歌手','等待下一次遇见',59]
@@ -123,8 +124,8 @@
         const savedRows=listTracks.length?Array.from({length:baseVisibleCount},(_,songIndex)=>{
           const track=listTracks[(songIndex+index*4+groupOffset)%listTracks.length],songTitle=track.title,artist=track.artist,src=track.artwork;
           const firstYear=2022+(songIndex+index)%3,firstMonth=String((songIndex*3+index)%12+1).padStart(2,'0'),firstDay=String((songIndex*7+20)%28+1).padStart(2,'0'),listenMoment=songIndex%3===0?'深夜开始听':songIndex%3===1?'傍晚开始听':'清晨开始听';
-          const listens=18+(songIndex*11+index*7)%76,memory=emotionConversions[(songIndex+index)%emotionConversions.length](listens);
-          return `<li class="song-row"><span class="song-art"${listCoverStyle(songIndex)}><img loading="lazy" src="${src}" alt="${songTitle} 封面" /></span><span class="song-copy"><strong class="song-title">${songTitle}</strong><span class="song-meta">${artist}</span><span class="song-memory">${firstYear}.${firstMonth}.${firstDay} ${listenMoment} · ${memory}</span></span></li>`;
+          const listens=18+(songIndex*11+index*7)%76,memory=emotionConversions[(songIndex+index)%emotionConversions.length](listens),listeningCopy=title==='红心足迹·上海'?listenMoment.replace('开始听','在上海听'):listenMoment;
+          return `<li class="song-row"><span class="song-art"${listCoverStyle(songIndex)}><img loading="lazy" src="${src}" alt="${songTitle} 封面" /></span><span class="song-copy"><strong class="song-title">${songTitle}</strong><span class="song-meta">${artist}</span><span class="song-memory">${firstYear}.${firstMonth}.${firstDay} ${listeningCopy} · ${memory}</span></span></li>`;
         }).join(''):groupName==='artist'?'<li class="song-empty">该歌手暂无已同步的榜单作品</li>':'';
         const newlySavedRows=savedTracks.map((track,songIndex)=>{
           const src=track.artwork||recommendationTracks[track.recommendationIndex]?.artwork;
@@ -204,7 +205,15 @@
       }
       const allMonths = years.flatMap(year => getMonths(year).map(([month,count]) => ({year,month,count})));
       const demoSongCount = allMonths.reduce((sum,month) => sum + month.count, 0);
+      const monthStories = [
+        '看起来是断舍离的一个月，你与过去记忆中爱过的歌缓缓告别。快节奏的生活里，缓拍带来了瞬间的豁达通透。',
+        '你的红心足迹跨过两座城市，在深夜与清晨各留下几枚红心，收藏列表成了你的旅行手账。',
+        '这些心动被一条柔软的线串起，把这个月的碎片缝成了一张完整的音乐地图。',
+        '你在这个月做了大幅度的整理，旧爱被轻轻移出，只留下真正心动的歌。断舍离的背后，是一次更清晰的自我认知。',
+        '摇滚的躁动从列表里淡出，钢琴曲的安静取而代之，你的收藏从呐喊转向倾听。'
+      ];
       let activeMonthIndex = allMonths.findIndex(item => item.month === '2026.01');
+      function updateTimelineSelection(){timelineCanvas.querySelectorAll('[data-month-index]').forEach(node=>node.classList.toggle('is-active',Number(node.dataset.monthIndex)===activeMonthIndex));}
       function renderYearScrubber() {
         selectedMonth.textContent = allMonths[activeMonthIndex].month;
         const monthTicks = allMonths.map((item,index) => `<button class="month-tick${item.month.endsWith('.01') ? ' is-year' : ''}" type="button" data-month-index="${index}" style="--position:${index / (allMonths.length - 1) * 100}%" aria-selected="${index === activeMonthIndex}" aria-label="定位到 ${item.month}，${item.count} 首收藏"></button>`).join('');
@@ -224,21 +233,23 @@
             const row = Math.floor(compactIndex / 4);
             const gridCount = Math.max(0,count - 3);
             const rowLength = Math.min(4,gridCount - row * 4);
-            const alignedColumn = rowLength > 1 ? column * 3 / (rowLength - 1) : 1.5;
+            const alignedColumn = rowLength > 1 ? column * 3 / (rowLength - 1) : 0;
             const size = songIndex === 0 ? 64 : songIndex < 3 ? 30 : 22;
             const dx = songIndex === 0 ? -60 : songIndex === 1 ? 30 : songIndex === 2 ? 30 : -60 + alignedColumn * (98 / 3);
             const y = songIndex === 0 ? 74 : songIndex === 1 ? 74 : songIndex === 2 ? 112 : 154 + row * 24;
             const r = 0;
             const src = covers[cursor++ % covers.length];
-            return `<span class="month-cover" style="left:${x+dx}px;top:${y}px;width:${size}px;transform:rotate(${r}deg)"><img loading="lazy" src="${src}" alt="${month} 收藏歌曲 ${songIndex + 1}，听过 ${playCount} 次" /></span>`;
+            return `<span class="month-cover" data-month-index="${monthIndex}" style="left:${x+dx}px;top:${y}px;width:${size}px;transform:rotate(${r}deg)"><img loading="lazy" src="${src}" alt="${month} 收藏歌曲 ${songIndex + 1}，听过 ${playCount} 次" /></span>`;
           }).join('');
-          return `<div class="month-guide" style="left:${x + 87}px"></div><div class="month-copy" style="left:${x-8}px"><strong>${month}</strong><span>${count} 首收藏</span></div>${images}`;
+          return `<div class="month-guide" data-month-index="${monthIndex}" style="left:${x + 87}px"></div><div class="month-copy" data-month-index="${monthIndex}" style="left:${x + 87}px"><strong>${month}</strong><span>${count} 首收藏</span><p class="month-story">${monthStories[monthIndex % monthStories.length]}</p></div>${images}`;
         }).join('');
+        updateTimelineSelection();
       }
       function setActiveMonth(index,{behavior='smooth'}={}) {
         activeMonthIndex = Math.max(0,Math.min(allMonths.length - 1,index));
         activeYear = allMonths[activeMonthIndex].year;
         renderYearScrubber();
+        updateTimelineSelection();
         timelineScroll.scrollTo({left:activeMonthIndex * 174,behavior});
       }
       function setActiveYear(year,options) {
@@ -255,7 +266,7 @@
       yearScrubber.addEventListener('pointerup',endYearDrag);
       yearScrubber.addEventListener('pointercancel',endYearDrag);
       let scrollFrame = 0;
-      timelineScroll.addEventListener('scroll', () => { if (scrollFrame) return; scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; const monthIndex = Math.max(0,Math.min(allMonths.length - 1,Math.round(timelineScroll.scrollLeft / 174))); if (monthIndex !== activeMonthIndex) { activeMonthIndex = monthIndex; activeYear = allMonths[monthIndex].year; renderYearScrubber(); } }); });
+      timelineScroll.addEventListener('scroll', () => { if (scrollFrame) return; scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; const monthIndex = Math.max(0,Math.min(allMonths.length - 1,Math.round(timelineScroll.scrollLeft / 174))); if (monthIndex !== activeMonthIndex) { activeMonthIndex = monthIndex; activeYear = allMonths[monthIndex].year; renderYearScrubber(); updateTimelineSelection(); } }); });
       timelineCanvas.innerHTML = '<p style="padding:220px 0 0 85px;color:#99958e;font-family:var(--hand);font-size:15px">正在整理每个月收藏的不同封面…</p>';
       Promise.all(['us','gb','cn','jp','kr'].map(country => fetch(`https://coverbox.henry-hu.com/charts-api?country=${country}`).then(response => response.ok ? response.json() : Promise.reject())))
         .then(results => {
